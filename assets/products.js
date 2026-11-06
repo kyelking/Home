@@ -9,7 +9,12 @@
  *   ship       extra shipping per unit for each method (0 = included in cost).
  *   supplier   the listing you buy from + its rating / reviews / sold count, so the
  *              planner can flag weak suppliers. Fill these in from the listing.
- *   images     photo URLs (with the supplier's permission). Empty = built-in drawing.
+ *   images     photos, in gallery order (with the supplier's permission). Either plain URLs
+ *              or { src, label }. Aim for 5–7 per product, e.g.:
+ *                { src: "photos/monolith-front.jpg", label: "Front" }, Back, Side,
+ *                Inside, Handle & lock, Wheels, Lifestyle (in use)
+ *              Empty = built-in drawings (front, side, inside, detail, dimensions).
+ *   dims       outside size in cm [height incl. wheels, width, depth]. Confirm with your sample.
  *   reviews    REAL customer reviews only, e.g. { name: "Dana R.", stars: 5, text: "...", date: "2026-12-01" }.
  *              The reviews section stays hidden until you add some.
  *   box        shipping box in cm [L, W, H] + real weight in kg.
@@ -54,7 +59,7 @@ const none = { url: "", rating: null, reviews: null, sold: null, note: "" };
 window.PRODUCTS = [
   // ───────────── SIGNATURE (luxury tier) ─────────────
   {
-    id: "monolith-20", name: "The Monolith", size: '20"', category: "Carry-On", tier: "Signature",
+    id: "monolith-20", dims: [55, 38, 23], name: "The Monolith", size: '20"', category: "Carry-On", tier: "Signature",
     price: 445, cost: 124, bulkCost: 72, style: "all-aluminum", material: "Aluminum-magnesium alloy",
     colors: [["Silver", "#c9ccd1"], ["Obsidian", "#1d1e21"], ["Champagne", "#cdb79a"], ["Rose Gold", "#c9a092"]],
     blurb: "Solid aluminum-magnesium alloy that picks up character with every trip.",
@@ -67,7 +72,7 @@ window.PRODUCTS = [
     search: "100% aluminum magnesium alloy carry on suitcase 20 inch",
   },
   {
-    id: "monolith-26", name: "The Monolith Check-In", size: '26"', category: "Check-In", tier: "Signature",
+    id: "monolith-26", dims: [70, 47, 28], name: "The Monolith Check-In", size: '26"', category: "Check-In", tier: "Signature",
     price: 595, cost: 178, bulkCost: 105, style: "all-aluminum", material: "Aluminum-magnesium alloy",
     colors: [["Silver", "#c9ccd1"], ["Obsidian", "#1d1e21"], ["Champagne", "#cdb79a"]],
     blurb: "The Monolith, sized for two weeks and built to last for decades.",
@@ -80,7 +85,7 @@ window.PRODUCTS = [
     search: "aluminum magnesium alloy suitcase 26 inch check in",
   },
   {
-    id: "atelier-leather", name: "The Atelier", size: '20"', category: "Carry-On", tier: "Signature",
+    id: "atelier-leather", dims: [55, 37, 23], name: "The Atelier", size: '20"', category: "Carry-On", tier: "Signature",
     price: 795, cost: 215, bulkCost: 128, style: "leather", material: "Full-grain cowhide over aluminum frame",
     colors: [["Cognac", "#8a5a3b"], ["Espresso", "#4a3326"], ["Black", "#1c1c1c"]],
     blurb: "Full-grain cowhide stretched over a rigid frame, hand-stitched at the corners.",
@@ -92,7 +97,7 @@ window.PRODUCTS = [
     search: "genuine cowhide leather trolley suitcase 20 inch spinner",
   },
   {
-    id: "heritage-trunk", name: "The Heritage Trunk", size: '24"', category: "Check-In", tier: "Signature",
+    id: "heritage-trunk", dims: [63, 43, 33], name: "The Heritage Trunk", size: '24"', category: "Check-In", tier: "Signature",
     price: 395, cost: 110, bulkCost: 65, style: "trunk", material: "Polycarbonate, aluminum frame, vegan leather trim",
     colors: [["Cognac", "#8a5a3b"], ["Forest", "#2f4436"], ["Black", "#1c1c1c"]],
     blurb: "A deep trunk silhouette with vegan-leather corner guards and straps.",
@@ -103,7 +108,7 @@ window.PRODUCTS = [
     search: "trunk suitcase aluminum frame leather strap retro 24 inch",
   },
   {
-    id: "carbon-20", name: "The Carbon Edition", size: '20"', category: "Carry-On", tier: "Signature",
+    id: "carbon-20", dims: [55, 37, 23], name: "The Carbon Edition", size: '20"', category: "Carry-On", tier: "Signature",
     price: 285, cost: 72, bulkCost: 34, style: "carbon", material: "Polycarbonate with carbon-fiber texture",
     colors: [["Carbon Black", "#1a1b1e"], ["Gunmetal", "#4a4e55"]],
     blurb: "A woven carbon-texture finish that hides scuffs and looks like nothing else on the carousel.",
@@ -115,7 +120,7 @@ window.PRODUCTS = [
     search: "carbon fiber texture suitcase aluminum frame 20 inch",
   },
   {
-    id: "vanity-case", name: "The Vanity Case", size: "Train case", category: "Bags", tier: "Signature",
+    id: "vanity-case", dims: [30, 22, 22], name: "The Vanity Case", size: "Train case", category: "Bags", tier: "Signature",
     price: 185, cost: 48, bulkCost: 24, style: "vanity", material: "Aluminum frame, vegan leather",
     colors: [["Blush", "#d8b4a6"], ["Black", "#1c1c1c"], ["Ivory", "#ece6da"]],
     blurb: "A mirrored train case with brush slots and removable dividers. Clips onto any trolley handle.",
@@ -128,7 +133,7 @@ window.PRODUCTS = [
 
   // ───────────── ESSENTIALS ─────────────
   {
-    id: "aviator-20", name: "The Aviator Carry-On", size: '20"', category: "Carry-On", tier: "Essentials",
+    id: "aviator-20", dims: [55, 37, 23], name: "The Aviator Carry-On", size: '20"', category: "Carry-On", tier: "Essentials",
     price: 265, cost: 95, bulkCost: 42, style: "aluminum-frame", material: "Polycarbonate, aluminum frame",
     colors: [["Graphite", "#2b2d31"], ["Champagne", "#cdb79a"], ["Sage", "#8c9a86"], ["Ivory", "#ece6da"]],
     blurb: "Aircraft-grade aluminum frame, zipperless closure, whisper-quiet spinners.",
@@ -140,7 +145,7 @@ window.PRODUCTS = [
     search: "aluminum frame carry on 20 inch PC suitcase zipperless TSA",
   },
   {
-    id: "aviator-26", name: "The Aviator Check-In", size: '26"', category: "Check-In", tier: "Essentials",
+    id: "aviator-26", dims: [69, 47, 28], name: "The Aviator Check-In", size: '26"', category: "Check-In", tier: "Essentials",
     price: 345, cost: 125, bulkCost: 58, style: "aluminum-frame", material: "Polycarbonate, aluminum frame",
     colors: [["Graphite", "#2b2d31"], ["Champagne", "#cdb79a"], ["Ivory", "#ece6da"]],
     blurb: "The same armored frame, sized for two weeks away.",
@@ -151,7 +156,7 @@ window.PRODUCTS = [
     search: "aluminum frame 26 inch check in suitcase PC hardshell",
   },
   {
-    id: "riviera-20", name: "The Riviera Front-Access", size: '20"', category: "Carry-On", tier: "Essentials",
+    id: "riviera-20", dims: [55, 37, 24], name: "The Riviera Front-Access", size: '20"', category: "Carry-On", tier: "Essentials",
     price: 255, cost: 99, bulkCost: 38, style: "front-pocket", material: "Polycarbonate, aluminum frame",
     colors: [["Navy", "#26324a"], ["Taupe", "#a39686"], ["Black", "#1c1c1c"]],
     blurb: "A front laptop pocket that opens in one motion at security.",
@@ -163,7 +168,7 @@ window.PRODUCTS = [
     search: "front open laptop pocket carry on suitcase aluminum frame USB",
   },
   {
-    id: "lumen-20", name: "The Lumen", size: '20"', category: "Carry-On", tier: "Essentials",
+    id: "lumen-20", dims: [55, 36, 23], name: "The Lumen", size: '20"', category: "Carry-On", tier: "Essentials",
     price: 175, cost: 45, bulkCost: 22, style: "hardshell", material: "Polycarbonate, zip closure",
     colors: [["Sand", "#c8b49a"], ["Mist", "#b8c2c9"], ["Black", "#1c1c1c"], ["Olive", "#6b6f4e"]],
     blurb: "Our lightest case. Expandable zip shell, 2.9 kg, in soft matte colors.",
@@ -174,7 +179,7 @@ window.PRODUCTS = [
     search: "matte PC carry on suitcase expandable lightweight 20 inch",
   },
   {
-    id: "commuter-22", name: "The Commuter Softside", size: '22"', category: "Carry-On", tier: "Essentials",
+    id: "commuter-22", dims: [56, 36, 23], name: "The Commuter Softside", size: '22"', category: "Carry-On", tier: "Essentials",
     price: 215, cost: 55, bulkCost: 28, style: "softside", material: "1680D ballistic nylon",
     colors: [["Black", "#1c1c1c"], ["Navy", "#26324a"], ["Charcoal", "#44464b"]],
     blurb: "Ballistic nylon with two front pockets. The case frequent flyers actually pick.",
@@ -186,7 +191,7 @@ window.PRODUCTS = [
     search: "1680D ballistic nylon softside carry on expandable spinner",
   },
   {
-    id: "cabin-16", name: "The Underseater", size: '16"', category: "Carry-On", tier: "Essentials",
+    id: "cabin-16", dims: [40, 30, 20], name: "The Underseater", size: '16"', category: "Carry-On", tier: "Essentials",
     price: 135, cost: 32, bulkCost: 15, style: "underseat", material: "Polycarbonate",
     colors: [["Sand", "#c8b49a"], ["Black", "#1c1c1c"], ["Sage", "#8c9a86"]],
     blurb: "Fits under the seat on budget airlines, so you never pay for overhead bin space.",
@@ -208,7 +213,7 @@ window.PRODUCTS = [
     search: "3 piece luggage set aluminum frame PC 20 24 28",
   },
   {
-    id: "weekender", name: "The Weekender", size: "45 L", category: "Bags", tier: "Essentials",
+    id: "weekender", dims: [50, 28, 28], name: "The Weekender", size: "45 L", category: "Bags", tier: "Essentials",
     price: 165, cost: 32, bulkCost: 16, style: "duffel", material: "Water-resistant vegan leather",
     colors: [["Cognac", "#8a5a3b"], ["Black", "#1c1c1c"], ["Sand", "#c8b49a"]],
     blurb: "Vegan leather duffel with a separate shoe compartment.",
@@ -219,7 +224,7 @@ window.PRODUCTS = [
     search: "PU leather weekender duffel bag shoe compartment trolley sleeve",
   },
   {
-    id: "garment-duffel", name: "The Garment Weekender", size: "45 L", category: "Bags", tier: "Essentials",
+    id: "garment-duffel", dims: [52, 30, 26], name: "The Garment Weekender", size: "45 L", category: "Bags", tier: "Essentials",
     price: 225, cost: 45, bulkCost: 24, style: "garment", material: "Vegan leather",
     colors: [["Black", "#1c1c1c"], ["Cognac", "#8a5a3b"]],
     blurb: "Unzips into a hanging suit bag, then folds back into a duffel. Arrive wrinkle-free.",

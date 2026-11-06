@@ -27,6 +27,10 @@ Preview locally: `python3 -m http.server` then open http://localhost:8000.
 
 Start with dropshipping to find your winners, then buy those in bulk. Switch between the two in `admin.html`.
 
+## Product photos
+
+Each product page has a swipeable gallery. Until you add photos it shows drawings: front, side, inside, handle and lock, and a dimensions chart (built from `dims`). Add 5–7 real photos per product in `images`, in this order: Front, Back, Side, Inside, Handle & lock, Wheels, Lifestyle. The dimensions chart always stays last. Use supplier photos only with written permission, or better, photos of your own samples.
+
 ## Supplier quality
 
 `admin.html` → *Sourcing links* flags any supplier below **4.7★, 500+ sold, 50+ reviews**. Copy each listing's numbers into `supplier` in `products.js`. Order a sample of everything and run it through the **Sample quality checklist** on the same page.

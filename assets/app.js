@@ -19,6 +19,13 @@
   }
 
   // ---------- helpers ----------
+  const gallery = (p, color, i) => {
+    const v = window.Core.views(p, color); i = Math.min(i, v.length - 1);
+    return `<div class="gal-main" data-swipe>${v.map((x, k) => `<div class="gal-slide art" aria-hidden="${k !== i}">${x.html}</div>`).join("")}</div>
+      <span class="gal-label">${v[i].label} · ${i + 1}/${v.length}</span>
+      ${v.length > 1 ? `<button class="gal-arrow prev" data-g="-1" aria-label="Previous photo">‹</button><button class="gal-arrow next" data-g="1" aria-label="Next photo">›</button>` : ""}
+      <div class="gal-thumbs">${v.map((x, k) => `<button class="gal-thumb ${k === i ? "on" : ""}" data-gi="${k}" aria-label="${x.label}">${x.html}</button>`).join("")}</div>`;
+  };
   const img = (p, color, cls = "") =>
     p.images && p.images.length
       ? `<img class="${cls}" src="${p.images[0]}" alt="${p.name}" loading="lazy" />`
@@ -53,7 +60,7 @@
     const list = P.filter(matches);
     $("#grid").innerHTML = list.map((p) => `
       <a class="card" href="#${p.id}">
-        <div class="card-img">${p.badge ? `<span class="badge">${p.badge}</span>` : ""}${img(p)}</div>
+        <div class="card-img">${p.badge ? `<span class="badge">${p.badge}</span>` : ""}${(() => { const v = window.Core.views(p); return `<div class="art v1">${v[0].html}</div>${v[1] ? `<div class="art v2">${v[1].html}</div>` : ""}<span class="views">${v.length} views</span>`; })()}</div>
         <div class="card-body">
           <h3>${p.name}</h3>
           <p class="muted">${p.size} · ${p.material}</p>
@@ -80,12 +87,12 @@
   // ---------- product page ----------
   function openProduct(id) {
     const p = byId[id]; if (!p) return;
-    let color = p.colors[0], qty = 1;
+    let color = p.colors[0], qty = 1, gi = 0;
     const ov = $("#pdpOverlay");
     const draw = () => {
       $("#pdp").innerHTML = `
         <button class="close" data-close>×</button>
-        <div class="pdp-img">${img(p, color[1], "big")}</div>
+        <div class="pdp-img gallery" style="--gi:${gi}">${gallery(p, color[1], gi)}</div>
         <div class="pdp-info">
           <p class="eyebrow">${p.category} · ${p.size}</p>
           <h2>${p.name}</h2>
@@ -119,8 +126,17 @@
     ov.onclick = (e) => {
       if (e.target === ov || e.target.closest("[data-close]")) return closeProduct();
       const c = e.target.closest("[data-color]"); if (c) { color = p.colors[+c.dataset.color]; draw(); }
+      const n = window.Core.views(p, color[1]).length;
+      const g = e.target.closest("[data-g]"); if (g) { gi = (gi + +g.dataset.g + n) % n; draw(); }
+      const t = e.target.closest("[data-gi]"); if (t) { gi = +t.dataset.gi; draw(); }
       const q = e.target.closest("[data-q]"); if (q) { qty = Math.max(1, qty + +q.dataset.q); draw(); }
       if (e.target.closest("[data-add]")) { addToCart(p, color[0], qty); closeProduct(); openCart(); }
+    };
+    let sx = null;
+    ov.ontouchstart = (e) => { if (e.target.closest("[data-swipe]")) sx = e.touches[0].clientX; };
+    ov.ontouchend = (e) => {
+      if (sx == null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+      if (Math.abs(dx) > 40) { const n = window.Core.views(p, color[1]).length; gi = (gi + (dx < 0 ? 1 : -1) + n) % n; draw(); }
     };
     $("#stickyAtc").onclick = (e) => { if (e.target.closest("[data-add]")) { addToCart(p, color[0], qty); closeProduct(); openCart(); } };
   }
