@@ -41,21 +41,33 @@
   $("#heroArt").innerHTML = art(byId["aviator-20"], "#cdb79a");
 
   // ---------- grid ----------
-  const cats = ["All", ...new Set(P.map((p) => p.category))];
+  const cats = ["All", "Signature", ...new Set(P.map((p) => p.category))];
+  const matches = (p) => filter === "All" || (filter === "Signature" ? p.tier === "Signature" : p.category === filter);
+  const stars = (n) => "★★★★★".slice(0, Math.round(n)) + "☆☆☆☆☆".slice(0, 5 - Math.round(n));
+  const avg = (p) => p.reviews && p.reviews.length ? p.reviews.reduce((s, r) => s + r.stars, 0) / p.reviews.length : 0;
+  const ratingLine = (p) => p.reviews && p.reviews.length ? `<p class="rating"><span>${stars(avg(p))}</span> ${avg(p).toFixed(1)} (${p.reviews.length})</p>` : "";
   function renderFilters() {
     $("#filters").innerHTML = cats.map((c) => `<button class="chip ${c === filter ? "on" : ""}" data-cat="${c}">${c}</button>`).join("");
   }
   function renderGrid() {
-    const list = P.filter((p) => filter === "All" || p.category === filter);
+    const list = P.filter(matches);
     $("#grid").innerHTML = list.map((p) => `
       <a class="card" href="#p/${p.id}">
         <div class="card-img">${p.badge ? `<span class="badge">${p.badge}</span>` : ""}${img(p)}</div>
         <div class="card-body">
           <h3>${p.name}</h3>
-          <p class="muted">${p.size} · ${p.colors.length} colors</p>
+          <p class="muted">${p.size} · ${p.material}</p>
+          ${ratingLine(p)}
           <div class="swatches">${p.colors.map(([n, c]) => `<i style="background:${c}" title="${n}"></i>`).join("")}</div>
           <p class="price">${money(p.price)}</p>
         </div>
+      </a>`).join("");
+  }
+  function renderSignature() {
+    $("#sigGrid").innerHTML = P.filter((p) => p.tier === "Signature").map((p) => `
+      <a class="sig-card" href="#p/${p.id}">
+        <div class="sig-img">${img(p)}</div>
+        <div><h3>${p.name}</h3><p>${p.material}</p><p class="price">${money(p.price)}</p></div>
       </a>`).join("");
   }
   document.addEventListener("click", (e) => {
@@ -77,6 +89,8 @@
         <div class="pdp-info">
           <p class="eyebrow">${p.category} · ${p.size}</p>
           <h2>${p.name}</h2>
+          ${ratingLine(p)}
+          <p class="material">${p.material}</p>
           <p class="price big">${money(p.price)}</p>
           <p>${p.blurb}</p>
           <p class="label">Color — <b>${color[0]}</b></p>
@@ -92,6 +106,8 @@
           <p class="upsell">Add a second case and save ${Math.round(S.bundleDiscount * 100)}% on your whole order.</p>
           <h4>Details</h4>
           <ul class="specs">${p.specs.map((s) => `<li>${s}</li>`).join("")}</ul>
+          ${p.reviews && p.reviews.length ? `<h4>Reviews · ${avg(p).toFixed(1)} ★</h4><div class="reviews">${p.reviews.map((r) => `
+            <div class="review"><p class="rating"><span>${stars(r.stars)}</span> ${r.name}${r.verified !== false ? " · Verified buyer" : ""}</p><p>${r.text}</p></div>`).join("")}</div>` : ""}
         </div>`;
       const atc = $("#stickyAtc");
       atc.innerHTML = `<span>${p.name} · ${money(p.price)}</span><button class="btn primary" data-add>Add to bag</button>`;
@@ -188,5 +204,5 @@
   window.addEventListener("hashchange", route);
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeProduct(); closeCart(); } });
 
-  renderFilters(); renderGrid(); renderCartCount(); route();
+  renderFilters(); renderGrid(); renderSignature(); renderCartCount(); route();
 })();

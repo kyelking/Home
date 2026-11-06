@@ -118,3 +118,19 @@ h4 { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; margin: 
     padding: 10px 16px; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
   .shop-head h2, .faq h2 { font-size: 32px; } .story h2 { font-size: 34px; }
 }
+
+/* signature collection */
+.signature { background: #14130f; color: #eee5d6; padding: 80px clamp(16px, 4vw, 56px); }
+.sig-head { text-align: center; margin-bottom: 40px; }
+.sig-head h2 { font-size: clamp(32px, 4.5vw, 54px); line-height: 1.08; } .sig-head em { color: var(--gold); }
+.sig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.sig-card { border: 1px solid #2e2b25; background: #1b1a16; transition: .25s; display: block; }
+.sig-card:hover { border-color: var(--gold); }
+.sig-img { aspect-ratio: 4/3.4; background: radial-gradient(circle at 50% 40%, #3a362e, #1b1a16 72%); }
+.sig-img img, .sig-img .art { width: 100%; height: 100%; object-fit: cover; }
+.sig-card > div:last-child { padding: 16px 18px 20px; }
+.sig-card h3 { font-size: 24px; margin: 0; } .sig-card p { margin: 2px 0; color: #a59d8f; font-size: 13px; }
+.sig-card .price { color: #eee5d6; font-size: 15px; margin-top: 6px; }
+.material { color: var(--muted); font-size: 13px; margin: 0; }
+.rating { font-size: 12px; color: var(--muted); margin: 4px 0; } .rating span { color: var(--gold); letter-spacing: 1px; }
+.reviews { display: grid; gap: 12px; } .review { border-top: 1px solid var(--line); padding-top: 10px; } .review p { margin: 2px 0; font-size: 14px; }

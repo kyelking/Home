@@ -32,6 +32,7 @@
     <div class="panel">
       <h3>Assumptions</h3>
       <div class="row">
+        <label>How you buy<select id="mode"><option value="dropship">Dropship (buy 1 per order on AliExpress/CJ)</option><option value="bulk">Bulk (200+ from Alibaba into a US warehouse)</option></select></label>
         <label>Shipping method<select id="method"></select></label>
         <label>Import duty + tariffs %<input id="duty" type="number" step="1" /></label>
         <label>Returns / damage %<input id="returns" type="number" step="0.5" /></label>
@@ -60,7 +61,26 @@
     <div class="panel">
       <h3>Sourcing links</h3>
       <table id="sourcing"></table>
-      <p class="note">Search terms are pre-filled. Pick suppliers with 4.7★+, 500+ orders, a US warehouse option, and real customer photos. Order one sample of each before running ads.</p>
+      <p class="note">On AliExpress, sort by <b>Orders</b> and look for: 4.7★+, 500+ sold, 50+ reviews <b>with photos</b>, a store open 2+ years, and a "Ships from United States" option. Copy the rating, reviews and sold count into <code>supplier</code> in products.js and this table checks them for you.</p>
+    </div>
+
+    <div class="panel">
+      <h3>Sample quality checklist</h3>
+      <p class="muted">Order one of each product to your home before you run ads. Drop any product that fails two or more checks.</p>
+      <ul class="specs" style="columns:2;column-gap:40px">
+        <li>Wheels roll quietly on tile and carpet, with no wobble</li>
+        <li>Handle extends smoothly, locks at every height, little rattle</li>
+        <li>Shell flexes and springs back with no white stress marks</li>
+        <li>Frame clasps or zippers close evenly and don't snag</li>
+        <li>TSA lock opens with the code and the TSA key slot</li>
+        <li>No chemical smell after 24 hours open</li>
+        <li>Leather: real grain, stitched edges, not peeling (Atelier)</li>
+        <li>Alloy: magnet doesn't stick, dents look clean (Monolith)</li>
+        <li>Lining is stitched, not glued; no loose threads</li>
+        <li>Box arrives undamaged. If not, ask for extra packaging</li>
+        <li>Carry-on measures ≤ 55 × 40 × 23 cm including wheels</li>
+        <li>Real weight is within 10% of the listing</li>
+      </ul>
     </div>
 
     <div class="panel">
@@ -84,9 +104,10 @@
     function render() {
       S.costs.dutyPct = +$("#duty").value / 100; S.costs.returnsPct = +$("#returns").value / 100; S.costs.appsPerOrder = +$("#apps").value;
       const method = $("#method").value;
-      const rows = P.map((p) => ({ p, u: unitEconomics(p, method, prices[p.id]), src: shipCost(p, method).source }));
+      const mode = $("#mode").value;
+      const rows = P.map((p) => ({ p, u: unitEconomics(p, method, prices[p.id], mode), src: mode === "bulk" ? "E" : shipCost(p, method).source }));
       $("#unit").innerHTML = `<tr><th>Product</th><th>Price</th><th>Supplier</th><th>Shipping</th><th>Duty</th><th>Fees+returns+apps</th><th>Total cost</th><th>Profit</th><th>Margin</th><th>Breakeven ROAS</th><th>Max CPA</th></tr>` +
-        rows.map(({ p, u, src }) => `<tr><td>${p.name} <span class="muted">${p.size}</span></td>
+        rows.map(({ p, u, src }) => `<tr><td>${p.tier === "Signature" ? "◆ " : ""}${p.name} <span class="muted">${p.size}</span></td>
           <td><input data-price="${p.id}" type="number" value="${u.price}" /></td>
           <td>${money(u.cost, 2)}</td><td>${money(u.ship, 2)} <span class="muted">${src === "quote" ? "Q" : "E"}</span></td><td>${money(u.duty, 2)}</td>
           <td>${money(u.pay + u.returns + u.apps, 2)}</td><td>${money(u.landed, 2)}</td>
@@ -110,16 +131,19 @@
         [`<span class="${net > 0 ? "good" : "bad"}">${money(net)}</span>`, "profit after ads / month"],
       ].map(([v, l]) => `<div class="kpi"><b>${v}</b><span>${l}</span></div>`).join("");
 
-      $("#sourcing").innerHTML = `<tr><th>Product</th><th>Target cost</th><th>AliExpress</th><th>Alibaba</th><th>CJ Dropshipping</th><th>Your supplier</th></tr>` +
-        P.map((p) => { const q = encodeURIComponent(p.search); return `<tr><td>${p.name}</td><td>≤ ${money(p.cost)}</td>
+      $("#sourcing").innerHTML = `<tr><th>Product</th><th>Target cost (1 / bulk)</th><th>Supplier quality</th><th>AliExpress</th><th>Alibaba</th><th>CJ Dropshipping</th><th>Your supplier</th></tr>` +
+        P.map((p) => { const q = encodeURIComponent(p.search); const chk = Core.supplierCheck(p), s = p.supplier || {};
+          const qual = chk.unknown ? '<span class="muted">Pick one</span>'
+            : `<span class="${chk.ok ? "good" : "bad"}">${chk.ok ? "✓ Passes" : "✗ " + chk.reasons.join(", ")}</span><br><span class="muted">${s.rating ?? "?"}★ · ${s.reviews ?? "?"} reviews · ${s.sold ?? "?"}+ sold</span>`;
+          return `<tr><td style="white-space:normal;min-width:180px">${p.name}${s.note ? `<br><span class="muted" style="font-size:11px">${s.note}</span>` : ""}</td><td>≤ ${money(p.cost)} / ${money(p.bulkCost)}</td><td style="text-align:left">${qual}</td>
           <td><a class="src" target="_blank" rel="noopener" href="https://www.aliexpress.us/w/wholesale-${q.replace(/%20/g, "-")}.html">Search</a></td>
           <td><a class="src" target="_blank" rel="noopener" href="https://www.alibaba.com/trade/search?SearchText=${q}">Search</a></td>
           <td><a class="src" target="_blank" rel="noopener" href="https://cjdropshipping.com/search/${q}.html">Search</a></td>
-          <td>${p.supplierUrl ? `<a class="src" target="_blank" rel="noopener" href="${p.supplierUrl}">Open</a>` : '<span class="muted">not set</span>'}</td></tr>`; }).join("");
+          <td>${s.url ? `<a class="src" target="_blank" rel="noopener" href="${s.url}">Open</a>` : '<span class="muted">not set</span>'}</td></tr>`; }).join("");
     }
 
     document.addEventListener("input", (e) => { if (e.target.dataset.price) prices[e.target.dataset.price] = +e.target.value; render(); });
-    $("#method").onchange = render;
+    $("#method").onchange = render; $("#mode").onchange = render;
 
     $("#csv").onclick = () => {
       const head = ["Handle", "Title", "Body (HTML)", "Vendor", "Product Category", "Type", "Tags", "Published", "Option1 Name", "Option1 Value", "Variant SKU", "Variant Grams", "Variant Inventory Policy", "Variant Fulfillment Service", "Variant Price", "Variant Requires Shipping", "Variant Taxable", "Image Src", "Cost per item", "Status"];
