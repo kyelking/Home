@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arden &amp; Vale — Aluminum-Frame Luggage</title>
+  <meta name="description" content="Aluminum-frame carry-ons and check-in luggage. Free shipping over $200, 30-day returns." />
+  <meta property="og:title" content="Arden & Vale — Quiet luxury luggage" />
+  <meta property="og:description" content="Aluminum-frame carry-ons built to outlast the trip." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="announce" id="announce"></div>
+
+  <header class="nav">
+    <a href="#" class="logo" id="logo"></a>
+    <nav class="links">
+      <a href="#shop" data-filter="Carry-On">Carry-On</a>
+      <a href="#shop" data-filter="Check-In">Check-In</a>
+      <a href="#shop" data-filter="Sets">Sets</a>
+      <a href="#shop" data-filter="Bags">Bags</a>
+    </nav>
+    <button class="cart-btn" id="cartBtn" aria-label="Open cart">Bag <span id="cartCount">0</span></button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">The Aviator Collection</p>
+      <h1>Built like a vault.<br /><em>Carried like a whisper.</em></h1>
+      <p class="lede">Aluminum frames, zipperless closures and silent spinners, made for people who travel often and pack light.</p>
+      <div class="cta-row">
+        <a href="#p/aviator-20" class="btn primary">Shop the Aviator</a>
+        <a href="#shop" class="btn ghost">View all luggage</a>
+      </div>
+    </div>
+    <div class="hero-art" id="heroArt"></div>
+  </section>
+
+  <section class="trust">
+    <div><strong>Free shipping</strong><span id="trustShip"></span></div>
+    <div><strong>30-day returns</strong><span>Travel with it first</span></div>
+    <div><strong>Warranty</strong><span>Frame, wheels &amp; handle</span></div>
+    <div><strong>Secure checkout</strong><span>Apple Pay · Shop Pay · Cards</span></div>
+  </section>
+
+  <section id="shop" class="shop">
+    <div class="shop-head">
+      <h2>The Collection</h2>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="story">
+    <div>
+      <h2>Why aluminum frames?</h2>
+      <p>Zippers are the first thing to fail on a suitcase. Our cases close on an aluminum frame with locking clasps, so there's no zipper to split, snag or get forced open.</p>
+    </div>
+    <ul class="features">
+      <li><b>01</b> Polycarbonate shell that flexes under impact and springs back.</li>
+      <li><b>02</b> 360° double spinner wheels for smooth, quiet rolling.</li>
+      <li><b>03</b> TSA-approved locks built into the frame.</li>
+      <li><b>04</b> Lined interior with compression straps and a divider.</li>
+    </ul>
+  </section>
+
+  <section class="faq">
+    <h2>Questions</h2>
+    <details><summary>How long does shipping take?</summary><p id="faqShip"></p></details>
+    <details><summary>Will the carry-on fit in the overhead bin?</summary><p>The 20" cases measure about 55 × 37 × 23 cm including wheels, which fits most major US and EU airlines. Budget airlines often have smaller limits, so check yours before you fly.</p></details>
+    <details><summary>What's your return policy?</summary><p>Return any unused item within 30 days of delivery for a full refund. Email us and we'll send instructions.</p></details>
+    <details><summary>Do you ship internationally?</summary><p>Yes. Shipping costs and times are shown at checkout.</p></details>
+  </section>
+
+  <footer class="footer">
+    <div class="logo" id="footLogo"></div>
+    <p id="footContact"></p>
+    <p class="small">© <span id="year"></span> · Shipping · Returns · Privacy · Terms</p>
+  </footer>
+
+  <!-- Product detail -->
+  <div class="overlay" id="pdpOverlay" hidden>
+    <article class="pdp" id="pdp" role="dialog" aria-modal="true"></article>
+  </div>
+
+  <!-- Cart -->
+  <div class="overlay right" id="cartOverlay" hidden>
+    <aside class="cart" id="cart" role="dialog" aria-modal="true" aria-label="Shopping bag"></aside>
+  </div>
+
+  <div class="sticky-atc" id="stickyAtc" hidden></div>
+
+  <script src="assets/products.js"></script>
+  <script src="assets/core.js"></script>
+  <script src="assets/tracking.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
