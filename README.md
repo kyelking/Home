@@ -4,7 +4,7 @@ A dropshipping storefront for unbranded, premium-looking luggage sourced from Al
 
 | File | What it is |
 |---|---|
-| `index.html` | The store. Ads can link straight to a product: `/#p/aviator-20` or `/?p=aviator-20` |
+| `index.html` | The store. Ads can link straight to a product: `/#aviator-20` or `/?p=aviator-20` |
 | `admin.html` | Your private profit, shipping and $100k-a-month planner, supplier search links, and a Shopify CSV export |
 | `assets/products.js` | **The only file you need to edit**: products, costs, shipping quotes, supplier links, photos, pixel IDs |
 

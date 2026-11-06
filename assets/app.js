@@ -52,7 +52,7 @@
   function renderGrid() {
     const list = P.filter(matches);
     $("#grid").innerHTML = list.map((p) => `
-      <a class="card" href="#p/${p.id}">
+      <a class="card" href="#${p.id}">
         <div class="card-img">${p.badge ? `<span class="badge">${p.badge}</span>` : ""}${img(p)}</div>
         <div class="card-body">
           <h3>${p.name}</h3>
@@ -65,7 +65,7 @@
   }
   function renderSignature() {
     $("#sigGrid").innerHTML = P.filter((p) => p.tier === "Signature").map((p) => `
-      <a class="sig-card" href="#p/${p.id}">
+      <a class="sig-card" href="#${p.id}">
         <div class="sig-img">${img(p)}</div>
         <div><h3>${p.name}</h3><p>${p.material}</p><p class="price">${money(p.price)}</p></div>
       </a>`).join("");
@@ -126,7 +126,7 @@
   }
   function closeProduct() {
     $("#pdpOverlay").hidden = true; $("#stickyAtc").hidden = true; document.body.classList.remove("lock");
-    if (location.hash.startsWith("#p/")) history.replaceState(null, "", location.pathname + location.search);
+    if (byId[location.hash.slice(1).replace(/^p\//, "")]) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
   }
 
   // ---------- cart ----------
@@ -195,11 +195,11 @@
     $("#cart").insertAdjacentHTML("beforeend", `<div class="notice">Demo mode: payments aren't connected yet. Order total would be <b>${money(t.total)}</b>. See README to connect Shopify or Stripe.</div>`);
   }
 
-  // ---------- routing (lets ads link straight to a product: /#p/aviator-20 or ?p=aviator-20) ----------
+  // ---------- routing (ads can link straight to a product: /#aviator-20 or ?p=aviator-20) ----------
   function route() {
     const q = new URLSearchParams(location.search).get("p");
-    const h = location.hash.match(/^#p\/(.+)/);
-    if (h) openProduct(h[1]); else if (q && byId[q]) openProduct(q);
+    const h = location.hash.slice(1).replace(/^p\//, "");
+    if (byId[h]) openProduct(h); else if (q && byId[q]) openProduct(q);
   }
   window.addEventListener("hashchange", route);
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeProduct(); closeCart(); } });
