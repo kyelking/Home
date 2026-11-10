@@ -15,6 +15,7 @@
  *                Inside, Handle & lock, Wheels, Lifestyle (in use)
  *              Empty = built-in drawings (front, side, inside, detail, dimensions).
  *   dims       outside size in cm [height incl. wheels, width, depth]. Confirm with your sample.
+ *   candidates listings found so far that are worth checking. Pick one, then copy it into supplier.
  *   reviews    REAL customer reviews only, e.g. { name: "Dana R.", stars: 5, text: "...", date: "2026-12-01" }.
  *              The reviews section stays hidden until you add some.
  *   box        shipping box in cm [L, W, H] + real weight in kg.
@@ -59,7 +60,7 @@ const none = { url: "", rating: null, reviews: null, sold: null, note: "" };
 window.PRODUCTS = [
   // ───────────── SIGNATURE (luxury tier) ─────────────
   {
-    id: "monolith-20", dims: [55, 38, 23], name: "The Monolith", size: '20"', category: "Carry-On", tier: "Signature",
+    id: "monolith-20", candidates: ["https://www.aliexpress.us/item/3256806140666440.html", "https://www.aliexpress.us/item/3256806558015541.html", "https://www.aliexpress.us/item/3256806532623482.html"], dims: [55, 38, 23], name: "The Monolith", size: '20"', category: "Carry-On", tier: "Signature",
     price: 445, cost: 124, bulkCost: 72, style: "all-aluminum", material: "Aluminum-magnesium alloy",
     colors: [["Silver", "#c9ccd1"], ["Obsidian", "#1d1e21"], ["Champagne", "#cdb79a"], ["Rose Gold", "#c9a092"]],
     blurb: "Solid aluminum-magnesium alloy that picks up character with every trip.",
@@ -72,7 +73,7 @@ window.PRODUCTS = [
     search: "100% aluminum magnesium alloy carry on suitcase 20 inch",
   },
   {
-    id: "monolith-26", dims: [70, 47, 28], name: "The Monolith Check-In", size: '26"', category: "Check-In", tier: "Signature",
+    id: "monolith-26", candidates: ["https://www.aliexpress.us/item/3256807273933961.html", "https://www.aliexpress.us/item/3256805496892741.html"], dims: [70, 47, 28], name: "The Monolith Check-In", size: '26"', category: "Check-In", tier: "Signature",
     price: 595, cost: 178, bulkCost: 105, style: "all-aluminum", material: "Aluminum-magnesium alloy",
     colors: [["Silver", "#c9ccd1"], ["Obsidian", "#1d1e21"], ["Champagne", "#cdb79a"]],
     blurb: "The Monolith, sized for two weeks and built to last for decades.",
@@ -85,7 +86,7 @@ window.PRODUCTS = [
     search: "aluminum magnesium alloy suitcase 26 inch check in",
   },
   {
-    id: "atelier-leather", dims: [55, 37, 23], name: "The Atelier", size: '20"', category: "Carry-On", tier: "Signature",
+    id: "atelier-leather", candidates: ["https://www.aliexpress.us/item/3256805564748441.html", "https://www.aliexpress.us/w/wholesale-leather-suitcase.html"], dims: [55, 37, 23], name: "The Atelier", size: '20"', category: "Carry-On", tier: "Signature",
     price: 795, cost: 215, bulkCost: 128, style: "leather", material: "Full-grain cowhide over aluminum frame",
     colors: [["Cognac", "#8a5a3b"], ["Espresso", "#4a3326"], ["Black", "#1c1c1c"]],
     blurb: "Full-grain cowhide stretched over a rigid frame, hand-stitched at the corners.",
@@ -97,7 +98,7 @@ window.PRODUCTS = [
     search: "genuine cowhide leather trolley suitcase 20 inch spinner",
   },
   {
-    id: "heritage-trunk", dims: [63, 43, 33], name: "The Heritage Trunk", size: '24"', category: "Check-In", tier: "Signature",
+    id: "heritage-trunk", candidates: ["https://www.aliexpress.us/item/3256811624182464.html", "https://www.aliexpress.us/w/wholesale-vintage-suitcase-luggage.html"], dims: [63, 43, 33], name: "The Heritage Trunk", size: '24"', category: "Check-In", tier: "Signature",
     price: 395, cost: 110, bulkCost: 65, style: "trunk", material: "Polycarbonate, aluminum frame, vegan leather trim",
     colors: [["Cognac", "#8a5a3b"], ["Forest", "#2f4436"], ["Black", "#1c1c1c"]],
     blurb: "A deep trunk silhouette with vegan-leather corner guards and straps.",
@@ -108,7 +109,7 @@ window.PRODUCTS = [
     search: "trunk suitcase aluminum frame leather strap retro 24 inch",
   },
   {
-    id: "carbon-20", dims: [55, 37, 23], name: "The Carbon Edition", size: '20"', category: "Carry-On", tier: "Signature",
+    id: "carbon-20", candidates: ["https://www.aliexpress.us/item/3256809642696167.html", "https://www.aliexpress.us/item/3256809626438842.html"], dims: [55, 37, 23], name: "The Carbon Edition", size: '20"', category: "Carry-On", tier: "Signature",
     price: 285, cost: 72, bulkCost: 34, style: "carbon", material: "Polycarbonate with carbon-fiber texture",
     colors: [["Carbon Black", "#1a1b1e"], ["Gunmetal", "#4a4e55"]],
     blurb: "A woven carbon-texture finish that hides scuffs and looks like nothing else on the carousel.",
@@ -133,7 +134,7 @@ window.PRODUCTS = [
 
   // ───────────── ESSENTIALS ─────────────
   {
-    id: "aviator-20", dims: [55, 37, 23], name: "The Aviator Carry-On", size: '20"', category: "Carry-On", tier: "Essentials",
+    id: "aviator-20", candidates: ["https://www.aliexpress.us/item/3256804918922397.html", "https://www.aliexpress.us/item/3256810161817835.html"], dims: [55, 37, 23], name: "The Aviator Carry-On", size: '20"', category: "Carry-On", tier: "Essentials",
     price: 265, cost: 95, bulkCost: 42, style: "aluminum-frame", material: "Polycarbonate, aluminum frame",
     colors: [["Graphite", "#2b2d31"], ["Champagne", "#cdb79a"], ["Sage", "#8c9a86"], ["Ivory", "#ece6da"]],
     blurb: "Aircraft-grade aluminum frame, zipperless closure, whisper-quiet spinners.",
@@ -145,7 +146,7 @@ window.PRODUCTS = [
     search: "aluminum frame carry on 20 inch PC suitcase zipperless TSA",
   },
   {
-    id: "aviator-26", dims: [69, 47, 28], name: "The Aviator Check-In", size: '26"', category: "Check-In", tier: "Essentials",
+    id: "aviator-26", candidates: ["https://www.aliexpress.us/item/3256808104828324.html"], dims: [69, 47, 28], name: "The Aviator Check-In", size: '26"', category: "Check-In", tier: "Essentials",
     price: 345, cost: 125, bulkCost: 58, style: "aluminum-frame", material: "Polycarbonate, aluminum frame",
     colors: [["Graphite", "#2b2d31"], ["Champagne", "#cdb79a"], ["Ivory", "#ece6da"]],
     blurb: "The same armored frame, sized for two weeks away.",
@@ -156,7 +157,7 @@ window.PRODUCTS = [
     search: "aluminum frame 26 inch check in suitcase PC hardshell",
   },
   {
-    id: "riviera-20", dims: [55, 37, 24], name: "The Riviera Front-Access", size: '20"', category: "Carry-On", tier: "Essentials",
+    id: "riviera-20", candidates: ["https://www.aliexpress.us/item/3256805365297778.html", "https://www.aliexpress.us/item/3256808104828324.html"], dims: [55, 37, 24], name: "The Riviera Front-Access", size: '20"', category: "Carry-On", tier: "Essentials",
     price: 255, cost: 99, bulkCost: 38, style: "front-pocket", material: "Polycarbonate, aluminum frame",
     colors: [["Navy", "#26324a"], ["Taupe", "#a39686"], ["Black", "#1c1c1c"]],
     blurb: "A front laptop pocket that opens in one motion at security.",
@@ -224,7 +225,7 @@ window.PRODUCTS = [
     search: "PU leather weekender duffel bag shoe compartment trolley sleeve",
   },
   {
-    id: "garment-duffel", dims: [52, 30, 26], name: "The Garment Weekender", size: "45 L", category: "Bags", tier: "Essentials",
+    id: "garment-duffel", candidates: ["https://www.aliexpress.us/w/wholesale-convertible-garment-duffel-bag.html"], dims: [52, 30, 26], name: "The Garment Weekender", size: "45 L", category: "Bags", tier: "Essentials",
     price: 225, cost: 45, bulkCost: 24, style: "garment", material: "Vegan leather",
     colors: [["Black", "#1c1c1c"], ["Cognac", "#8a5a3b"]],
     blurb: "Unzips into a hanging suit bag, then folds back into a duffel. Arrive wrinkle-free.",

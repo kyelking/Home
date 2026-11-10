@@ -139,7 +139,7 @@
           <td><a class="src" target="_blank" rel="noopener" href="https://www.aliexpress.us/w/wholesale-${q.replace(/%20/g, "-")}.html">Search</a></td>
           <td><a class="src" target="_blank" rel="noopener" href="https://www.alibaba.com/trade/search?SearchText=${q}">Search</a></td>
           <td><a class="src" target="_blank" rel="noopener" href="https://cjdropshipping.com/search/${q}.html">Search</a></td>
-          <td>${s.url ? `<a class="src" target="_blank" rel="noopener" href="${s.url}">Open</a>` : '<span class="muted">not set</span>'}</td></tr>`; }).join("");
+          <td style="text-align:left">${s.url ? `<a class="src" target="_blank" rel="noopener" href="${s.url}">Chosen</a><br>` : ""}${(p.candidates || []).filter((u) => u !== s.url).map((u, i) => `<a class="src" target="_blank" rel="noopener" href="${u}">Option ${i + 1}</a>`).join(" · ") || (s.url ? "" : '<span class="muted">not set</span>')}</td></tr>`; }).join("");
     }
 
     document.addEventListener("input", (e) => { if (e.target.dataset.price) prices[e.target.dataset.price] = +e.target.value; render(); });
