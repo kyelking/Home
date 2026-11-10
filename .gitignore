@@ -1,0 +1,7 @@
+# video materials stay local; regenerate the test clip with video/tools/make_test_clip.sh
+video/sources/*
+video/references/*
+video/finished/*
+!video/*/.gitkeep
+video/tools/remotion/node_modules/
+video/tools/remotion/out/
